@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0f1c" />
+  <title>생활안전 데모 컴포넌트 — 미리보기</title>
+  <!-- 온라인이면 Pretendard, 오프라인이면 시스템 폰트로 자동 폴백 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="./civic.css" />
+  <style>
+    html, body { margin: 0; min-height: 100%; background: #0a0f1c; }
+    .c-note {
+      max-width: 720px; margin: 0 auto 6px; padding: 10px 14px;
+      font-family: var(--mono, monospace); font-size: 12px; letter-spacing: .08em;
+      color: #7e8aa6; border: 1px dashed rgba(150,170,210,.28); border-radius: 10px;
+    }
+    .c-wrap { max-width: 720px; margin: 0 auto; }
+    .demo-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+    .demo-actions button {
+      font: inherit; font-size: 13px; color: #c3cce0; background: #0e1626;
+      border: 1px solid rgba(150,170,210,.16); border-radius: 8px; padding: 7px 12px; cursor: pointer;
+    }
+    h2.sec { color: #eaf0fb; font-size: 15px; font-weight: 700; margin: 26px 0 10px; opacity: .8; }
+  </style>
+</head>
+<body>
+  <div class="c-wrap">
+    <p class="c-note">미리보기 · 샘플 데이터입니다. 이 폴더의 컴포넌트는 아이디어 비종속 패턴이며, 당일 새 저장소에서 DataLayer 와 엮어 실제 데이터로 채웁니다. (README 의 배선 레시피 참고)</p>
+  </div>
+
+  <!-- 데모 앱 루트 (.c-app 안에서만 테마 적용) -->
+  <main class="c-app" id="app">
+    <div class="c-topbar">
+      <div class="c-title">안심신호 <span style="font-weight:400;color:#7e8aa6;font-size:.8em">데모 예시</span></div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span id="badge-slot"></span>
+        <span id="tools-slot"></span>
+      </div>
+    </div>
+
+    <h2 class="sec">액션카드</h2>
+    <div id="cards"></div>
+
+    <div class="demo-actions">
+      <button data-state="cards">카드</button>
+      <button data-state="loading">로딩</button>
+      <button data-state="empty">빈 상태</button>
+      <button data-state="error">에러</button>
+    </div>
+
+    <h2 class="sec">지도</h2>
+    <div id="map"></div>
+  </main>
+
+  <script src="../data.js"></script>
+  <script src="./components.js"></script>
+  <script>
+    (function () {
+      var app = document.getElementById("app");
+      var cardsEl = document.getElementById("cards");
+
+      // 샘플 카드 (생활안전 예시 — 당일엔 공공데이터에서 생성)
+      var sample = [
+        { severity: "alert", badge: "폭염 경보", title: "오늘 낮 35°C, 야외활동을 줄이세요",
+          action: "가장 가까운 무더위쉼터로 이동", meta: [{ label: "거리", value: "320 m" }, { label: "도보", value: "4분" }],
+          cta: { label: "경로 보기", onClick: function () { Components.a11y.speak("가장 가까운 무더위쉼터는 320미터, 도보 4분 거리입니다."); } } },
+        { severity: "warn", badge: "호우 주의보", title: "2시간 내 시간당 30mm 강우 예상",
+          action: "지하·하천변 통행 자제", meta: [{ label: "지역", value: "종로구" }, { label: "발효", value: "14:00" }] },
+        { severity: "safe", badge: "상황 종료", title: "대기질이 ‘좋음’으로 회복되었습니다",
+          action: "평소 활동 재개 가능", meta: [{ label: "PM2.5", value: "12 ㎍/㎥" }] },
+      ];
+
+      // 출처 배지 (예시) — 실제로는 DataLayer.load() 의 r.source 사용
+      document.getElementById("badge-slot").innerHTML = Components.sourceBadge("example");
+
+      // 접근성 도구바 (큰글씨/고대비/음성)
+      var tools = Components.a11y.mountToolbar(app, {
+        getVoiceText: function () { return sample[0].title + ". " + sample[0].action; },
+      });
+      document.getElementById("tools-slot").appendChild(tools);
+
+      // 상태 토글 데모
+      function show(state) {
+        if (state === "loading") Components.setLoading(cardsEl, 3);
+        else if (state === "empty") Components.setEmpty(cardsEl, "지금은 발효 중인 경보가 없습니다.");
+        else if (state === "error") Components.setError(cardsEl, "데이터를 불러오지 못했습니다. 잠시 후 다시 시도하세요.");
+        else Components.renderCards(cardsEl, sample);
+      }
+      Array.prototype.forEach.call(document.querySelectorAll("[data-state]"), function (b) {
+        b.addEventListener("click", function () { show(b.getAttribute("data-state")); });
+      });
+      show("cards");
+
+      // 지도 (window.KAKAO_JS_KEY 없으면 플레이스홀더)
+      Components.map.embed(document.getElementById("map"), {
+        center: { lat: 37.5729, lng: 126.9794 }, level: 5,
+        markers: [{ lat: 37.5729, lng: 126.9794, title: "무더위쉼터" }],
+      });
+    })();
+  </script>
+</body>
+</html>
