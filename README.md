@@ -16,10 +16,10 @@
 powershell -NoProfile -ExecutionPolicy Bypass -File ./setup.ps1
 ```
 
-원격(아직 클론 안 함 / 빈 PC. `<USER>`, `<REPO>` 를 실제 경로로 치환):
+원격(아직 클론 안 함 / 빈 PC — 이 저장소 기준 URL 그대로 실행):
 
 ```
-irm https://raw.githubusercontent.com/<USER>/<REPO>/main/setup.ps1 | iex
+irm https://raw.githubusercontent.com/SJJ-universe/hackathon-prep-kit/main/setup.ps1 | iex
 ```
 
 비개발자/더블클릭용: `bootstrap.cmd` 를 더블클릭해도 동일하게 설치됩니다.
