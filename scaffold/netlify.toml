@@ -1,0 +1,24 @@
+# netlify.toml - 아이디어 비종속 제너릭 배포 설정 (당일 그대로 복사)
+# 무빌드 정적이면 build 섹션은 무시된다. 빌드형(vite 등)이면 command/publish만 맞춰라.
+
+[build]
+  publish = "."
+  # 빌드형이면 위 publish를 산출 폴더로 바꾸고 아래 command 주석 해제:
+  # command = "npm run build"
+  # publish = "dist"
+
+# SPA(클라이언트 라우터) 새로고침 404 방지: 모든 경로를 앱 셸로 리라이트.
+# 실제 파일이 있으면 그 파일이 우선 서빙되고, 없는 경로만 index.html(200)로 간다.
+# 단일 화면 정적이라 라우터가 없으면 이 블록은 지워도 무방.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# 기본 보안 헤더 (선택). 외부 임베드 차단/스니핑 방지.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

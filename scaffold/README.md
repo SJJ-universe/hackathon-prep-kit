@@ -15,7 +15,8 @@
 - `app.css` : 디자인 토큰(색·간격·타이포·라운드·그림자) + 범용 컴포넌트(버튼·카드·인풋·뱃지·토스트).
 - `app.js` : 셀렉터 헬퍼, 안전 출력(escape), 간단 상태 store, 결과 렌더 골격, 서비스워커 가드.
 - `serve.ps1` : 로컬 정적 서버 실행 + 브라우저 자동 오픈.
-- `deploy-netlify.ps1` : Netlify Drop(무인증) + CLI 배포.
+- `deploy-netlify.ps1` : Netlify Drop 안내 + CLI 배포(`-Dir`/`-SiteName`/`-DropOnly`/`-Draft`). 상세는 [`../guides/06_Netlify_배포_상세가이드.md`](../guides/06_Netlify_배포_상세가이드.md).
+- `netlify.toml` : SPA 404 방지 리다이렉트 + 기본 보안 헤더(제너릭). 빌드형이면 publish만 조정.
 - `deploy-ghpages.ps1` : gh CLI로 저장소 생성 → 푸시 → Pages 활성화.
 
 ## 빠른 시작 (당일 흐름)
