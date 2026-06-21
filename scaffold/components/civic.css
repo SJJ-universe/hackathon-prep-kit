@@ -1,0 +1,221 @@
+/* =========================================================================
+   civic.css — 생활·안전 데모용 주제 중립 컴포넌트 (Civic Safety OS 테마)
+   -------------------------------------------------------------------------
+   deck-starter 와 같은 팔레트를 써서, 슬라이드3 <iframe> 에 박았을 때 일체감.
+   아이디어 비종속: 액션카드/리스트/배지/지도/접근성 모드의 "패턴"만 제공한다.
+   주제 데이터·로직은 당일 새 저장소에서.
+
+   스코프: 토큰과 스타일은 .c-app 안에서만 적용 → 다른 페이지를 침범하지 않음.
+   다른 톤이 필요하면 .c-app 의 --accent 계열 변수만 바꾸면 된다.
+   ========================================================================= */
+.c-app {
+  /* deck-starter 정렬 팔레트 */
+  --bg: #0a0f1c;
+  --bg-2: #0e1626;
+  --bg-3: #131f33;
+  --ink: #eaf0fb;
+  --ink-2: #c3cce0;
+  --muted: #7e8aa6;
+  --line: rgba(150, 170, 210, 0.16);
+  --line-2: rgba(150, 170, 210, 0.28);
+
+  /* 의미를 가진 신호색 (심각도) */
+  --safe: #3fe0c5;
+  --info: #5aa9ff;
+  --warn: #ffb454;
+  --alert: #ff9a3d;
+  --danger: #ff6b57;
+
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 18px;
+
+  --kr: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", "Consolas", ui-monospace, monospace;
+
+  /* 접근성 모드에서 1.0 → 1.25 로 올라감 */
+  --scale: 1;
+
+  position: relative;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--kr);
+  font-size: calc(16px * var(--scale));
+  line-height: 1.55;
+  padding: clamp(16px, 4vw, 28px);
+}
+.c-app.a11y-lg { --scale: 1.28; }
+.c-app.a11y-hc {
+  --ink: #ffffff;
+  --ink-2: #eef3ff;
+  --muted: #b9c3da;
+  --bg: #04070e;
+  --bg-2: #0b1322;
+  --line: rgba(180, 200, 240, 0.34);
+}
+.c-app * { box-sizing: border-box; }
+
+/* ---- 상단바: 출처 배지 + 접근성 토글 ---- */
+.c-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.c-topbar .c-title {
+  font-weight: 800;
+  font-size: 1.18em;
+  letter-spacing: -0.01em;
+}
+.c-tools { display: flex; gap: 8px; }
+.c-tool {
+  font: inherit;
+  font-size: 0.82em;
+  color: var(--ink-2);
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.c-tool[aria-pressed="true"] { color: var(--safe); border-color: var(--safe); }
+.c-tool:focus-visible { outline: 2px solid var(--safe); outline-offset: 2px; }
+
+/* ---- 출처 배지 (실시간 / 예시) ---- */
+.c-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--mono);
+  font-size: 0.74em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--line-2);
+}
+.c-badge .d { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.c-badge[data-src="live"] { color: var(--safe); border-color: color-mix(in srgb, var(--safe) 50%, transparent); }
+.c-badge[data-src="snapshot"],
+.c-badge[data-src="example"] { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 50%, transparent); }
+
+/* ---- 액션카드: 경보/상황 → 한 가지 행동 ---- */
+.c-list { display: grid; gap: 14px; }
+.c-card {
+  position: relative;
+  background: linear-gradient(180deg, var(--bg-2), color-mix(in srgb, var(--bg) 70%, var(--bg-2)));
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 20px 22px 20px 26px;
+  overflow: hidden;
+}
+.c-card::before { /* 좌측 심각도 바 */
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 5px;
+  background: var(--sev, var(--info));
+}
+.c-card[data-sev="safe"] { --sev: var(--safe); }
+.c-card[data-sev="info"] { --sev: var(--info); }
+.c-card[data-sev="warn"] { --sev: var(--warn); }
+.c-card[data-sev="alert"] { --sev: var(--alert); }
+.c-card[data-sev="danger"] { --sev: var(--danger); }
+
+.c-card .c-chip {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.72em;
+  letter-spacing: 0.1em;
+  color: var(--sev, var(--info));
+  background: color-mix(in srgb, var(--sev, var(--info)) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sev, var(--info)) 35%, transparent);
+  border-radius: 6px;
+  padding: 3px 9px;
+  margin-bottom: 12px;
+}
+.c-card .c-card-title { font-weight: 700; font-size: 1.22em; letter-spacing: -0.01em; }
+.c-card .c-action {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 12px;
+  font-size: 1.02em;
+  color: var(--ink-2);
+}
+.c-card .c-action .arr { color: var(--sev, var(--info)); flex: none; }
+.c-card .c-action b { color: var(--ink); font-weight: 700; }
+.c-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 26px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.c-meta .m { display: flex; flex-direction: column; gap: 2px; }
+.c-meta .m .l { font-family: var(--mono); font-size: 0.66em; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+.c-meta .m .v { font-size: 0.98em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.c-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.92em;
+  color: var(--bg);
+  background: var(--sev, var(--safe));
+  border: 0;
+  border-radius: var(--r-md);
+  padding: 10px 16px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.c-cta:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* ---- 상태: 빈 / 로딩(스켈레톤) / 에러 ---- */
+.c-empty, .c-error {
+  text-align: center;
+  padding: 36px 20px;
+  color: var(--muted);
+  border: 1px dashed var(--line-2);
+  border-radius: var(--r-lg);
+}
+.c-error { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 40%, transparent); }
+.c-skel {
+  height: 92px;
+  border-radius: var(--r-lg);
+  background: linear-gradient(90deg, var(--bg-2) 25%, var(--bg-3) 37%, var(--bg-2) 63%);
+  background-size: 280% 100%;
+  animation: c-shimmer 1.3s ease-in-out infinite;
+}
+@keyframes c-shimmer { 0% { background-position: 130% 0; } 100% { background-position: -130% 0; } }
+
+/* ---- 지도 임베드 / 플레이스홀더 ---- */
+.c-map {
+  position: relative;
+  width: 100%;
+  min-height: 260px;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 23px, var(--line) 24px),
+    repeating-linear-gradient(90deg, transparent, transparent 23px, var(--line) 24px),
+    var(--bg-2);
+}
+.c-map .c-map-ph {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  color: var(--muted); text-align: center; padding: 0 24px;
+  font-family: var(--mono); font-size: 0.82em; letter-spacing: 0.08em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .c-skel { animation: none; }
+}
