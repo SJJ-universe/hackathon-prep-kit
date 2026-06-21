@@ -1,0 +1,33 @@
+# Node
+node_modules/
+dist/
+build/
+.npm/
+npm-debug.log*
+
+# Env / secrets
+.env
+.env.*
+*.local
+
+# Logs
+*.log
+logs/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Hosting / deploy
+.netlify/
+.vercel/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
