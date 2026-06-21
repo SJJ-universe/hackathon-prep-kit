@@ -40,15 +40,17 @@ irm https://raw.githubusercontent.com/SJJ-universe/hackathon-prep-kit/main/setup
 - Python 3.12 (`Python.Python.3.12`)
 - Visual Studio Code (`Microsoft.VisualStudioCode`)
 - GitHub CLI / gh (`GitHub.cli`)
+- cloudflared (`Cloudflare.cloudflared`) — L2 데모 폴백: 로컬 서버를 공개 HTTPS로 노출하는 quick tunnel
 - Edge 는 Windows 기본 탑재이므로 제외
 
 전역 CLI(npm, 검증된 패키지):
 
 - `serve` — 정적 사이트/SPA 로컬 서빙
-- `netlify-cli` — 당일 결과물 즉시 호스팅(`netlify deploy`)
+- `netlify-cli` — 당일 결과물 즉시 호스팅(`netlify deploy`, L0)
+- `vercel` — 다른 벤더 미러 호스팅(`vercel --prod`, L1)
 - `@anthropic-ai/claude-code` — Claude Code CLI
 - `@openai/codex` — Codex CLI
-- 선택(주석 처리, 필요 시 해제): `vercel`, `http-server`
+- 선택(주석 처리, 필요 시 해제): `http-server`
 
 Python 패키지(pip, 선택, `--user`):
 
@@ -73,7 +75,8 @@ Python 패키지(pip, 선택, `--user`):
 │   ├─ 03_호스팅_심사위원_시연.md        # Netlify Drop / gh-pages / 로컬 + QR (빠른 3경로)
 │   ├─ 04_에이전트_부트스트랩.md         # Claude CLI 우선 설치·PATH·인증·실행(에이전트 띄우기)
 │   ├─ 05_아이디어별_MVP_도구매트릭스.md  # 아이디어별 데이터·키·라이브러리·브라우저API·배포 종합
-│   └─ 06_Netlify_배포_상세가이드.md     # Netlify 현재 화면 기준 상세(Drop/CLI/도메인/Functions/한도)
+│   ├─ 06_Netlify_배포_상세가이드.md     # Netlify 현재 화면 기준 상세(Drop/CLI/도메인/Functions/한도)
+│   └─ 07_미러_터널_배포_상세가이드.md    # Vercel 미러(L1) + cloudflared 터널(L2) 폴백 상세
 └─ scaffold/        # 아이디어 비종속 일반 템플릿(빈 정적/웹 보일러플레이트). 당일 복사해 출발
 ```
 

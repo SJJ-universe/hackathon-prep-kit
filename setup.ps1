@@ -151,12 +151,14 @@ Write-Host ""
 Write-Host "---- Step 1/4: Core tools (winget) ----"
 # 검증된 winget ID 만 사용(웹 검색으로 현존 확인):
 #   Git.Git / OpenJS.NodeJS.LTS / Python.Python.3.12 / Microsoft.VisualStudioCode / GitHub.cli
+#   Cloudflare.cloudflared (L2 데모 폴백: 로컬 서버를 공개 HTTPS로 노출하는 quick tunnel)
 # Edge 는 Windows 에 기본 탑재되어 있으므로 설치 제외(의도적 생략).
 Install-WingetPkg -Id 'Git.Git'                    -Name 'Git'
 Install-WingetPkg -Id 'OpenJS.NodeJS.LTS'          -Name 'Node.js LTS'
 Install-WingetPkg -Id 'Python.Python.3.12'         -Name 'Python 3.12'
 Install-WingetPkg -Id 'Microsoft.VisualStudioCode' -Name 'Visual Studio Code'
 Install-WingetPkg -Id 'GitHub.cli'                 -Name 'GitHub CLI (gh)'
+Install-WingetPkg -Id 'Cloudflare.cloudflared'     -Name 'cloudflared (tunnel)'
 
 # PATH 갱신 후 node / npm 인식 보강
 Update-SessionPath
@@ -170,16 +172,17 @@ Write-Host "---- Step 2/4: Global CLIs (npm) ----"
 if (Test-Command npm) {
   # 검증된 npm 패키지만 본설치(웹 검색으로 npm 레지스트리 현존 확인):
   #   serve                 -> vercel/serve, 정적 사이트/SPA 로컬 서빙
-  #   netlify-cli           -> 'netlify deploy' 로 당일 결과물 호스팅
+  #   netlify-cli           -> 'netlify deploy' 로 당일 결과물 호스팅(L0)
+  #   vercel                -> 다른 벤더 미러 호스팅(L1, 'vercel --prod')
   #   @anthropic-ai/claude-code -> Claude Code CLI (공식 npm 패키지)
   #   @openai/codex         -> Codex CLI (공식 npm 패키지)
   Install-NpmPkg -Pkg 'serve'                     -Label 'serve (static server)'
   Install-NpmPkg -Pkg 'netlify-cli'               -Label 'netlify-cli'
+  Install-NpmPkg -Pkg 'vercel'                    -Label 'vercel'
   Install-NpmPkg -Pkg '@anthropic-ai/claude-code' -Label 'Claude Code CLI'
   Install-NpmPkg -Pkg '@openai/codex'             -Label 'Codex CLI'
 
   # 선택(주석 해제 시 설치):
-  #   vercel       : Netlify 대안 호스팅 CLI            -> Install-NpmPkg -Pkg 'vercel' -Label 'vercel'
   #   http-server  : serve 대체 정적 서버               -> Install-NpmPkg -Pkg 'http-server' -Label 'http-server'
   # 참고: Claude Code 는 네이티브 설치기(irm https://claude.ai/install.ps1 | iex)도 있으나,
   #       오프라인/일관성을 위해 검증된 npm 패키지로 설치한다.
@@ -226,6 +229,8 @@ Show-Version -Label 'gh'      -Cmd 'gh'      -VerArgs @('--version')
 Show-Version -Label 'code'    -Cmd 'code'    -VerArgs @('--version')
 Show-Version -Label 'serve'   -Cmd 'serve'   -VerArgs @('--version')
 Show-Version -Label 'netlify' -Cmd 'netlify' -VerArgs @('--version')
+Show-Version -Label 'vercel'  -Cmd 'vercel'  -VerArgs @('--version')
+Show-Version -Label 'cloudflared' -Cmd 'cloudflared' -VerArgs @('--version')
 Show-Version -Label 'claude'  -Cmd 'claude'  -VerArgs @('--version')
 Show-Version -Label 'codex'   -Cmd 'codex'   -VerArgs @('--version')
 

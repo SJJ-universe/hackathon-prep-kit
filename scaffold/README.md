@@ -17,6 +17,9 @@
 - `serve.ps1` : 로컬 정적 서버 실행 + 브라우저 자동 오픈.
 - `deploy-netlify.ps1` : Netlify Drop 안내 + CLI 배포(`-Dir`/`-SiteName`/`-DropOnly`/`-Draft`). 상세는 [`../guides/06_Netlify_배포_상세가이드.md`](../guides/06_Netlify_배포_상세가이드.md).
 - `netlify.toml` : SPA 404 방지 리다이렉트 + 기본 보안 헤더(제너릭). 빌드형이면 publish만 조정.
+- `deploy-vercel.ps1` : Vercel 미러 배포(L1, `-Dir`/`-Prod`). 상세는 [`../guides/07_미러_터널_배포_상세가이드.md`](../guides/07_미러_터널_배포_상세가이드.md).
+- `tunnel-cloudflared.ps1` : 로컬 서버 + cloudflared quick tunnel(L2, `-Dir`/`-Port`). 공개 HTTPS로 폰에서 카메라/위치 동작.
+- `vercel.json` : Vercel용 SPA rewrites 템플릿(제너릭).
 - `deploy-ghpages.ps1` : gh CLI로 저장소 생성 → 푸시 → Pages 활성화.
 
 ## 빠른 시작 (당일 흐름)
