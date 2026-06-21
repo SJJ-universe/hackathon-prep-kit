@@ -27,6 +27,8 @@ irm https://raw.githubusercontent.com/SJJ-universe/hackathon-prep-kit/main/setup
 설치 후 검증 섹션에서 `git / node / npm / python / gh / netlify` 등의 버전이 출력되면 정상입니다.
 일부 CLI가 NOT FOUND 면 새 터미널을 열고(PATH 갱신) 다시 확인하세요.
 
+> 처음 켠 PC라 에이전트(Claude CLI)조차 없다면: 먼저 [`guides/04_에이전트_부트스트랩.md`](guides/04_에이전트_부트스트랩.md)로 Claude CLI를 설치·인증·실행한 뒤, 그 에이전트에게 위 한 줄(setup.ps1)을 맡기세요. 사람이 직접 setup.ps1을 돌려도 Claude를 포함한 전체가 설치됩니다.
+
 ---
 
 ## 무엇이 설치되나
@@ -64,11 +66,17 @@ Python 패키지(pip, 선택, `--user`):
 ├─ AGENTS.md        # Codex/일반 에이전트용 작업 규약
 ├─ CLAUDE.md        # Claude Code용 작업 규약
 ├─ .gitignore
-├─ guides/          # 아이디어 비종속 지식: 데이터 카탈로그/호스팅 절차/데모 체크리스트 등
+├─ guides/
+│   ├─ 00_사전준비_체크리스트.md        # 대회 전 계정·API키·도구 발급 체크
+│   ├─ 01_당일_런북.md                 # 0~4시간 분단위 진행
+│   ├─ 02_분야별_고득점_빌드카드.md      # 시제 분야별 추천 아이디어·데이터
+│   ├─ 03_호스팅_심사위원_시연.md        # Netlify Drop / gh-pages / 로컬 + QR
+│   ├─ 04_에이전트_부트스트랩.md         # Claude CLI 우선 설치·PATH·인증·실행(에이전트 띄우기)
+│   └─ 05_아이디어별_MVP_도구매트릭스.md  # 아이디어별 데이터·키·라이브러리·브라우저API·배포 종합
 └─ scaffold/        # 아이디어 비종속 일반 템플릿(빈 정적/웹 보일러플레이트). 당일 복사해 출발
 ```
 
-- `guides/` 와 `scaffold/` 에는 주제와 무관한 일반 자료만 둔다(현재 비어 있을 수 있음).
+- `guides/` 와 `scaffold/` 에는 주제와 무관한 일반 자료만 둔다(도구·데이터·절차·일반 템플릿).
 - 두 폴더는 "당일 빠른 출발용 재료"일 뿐, 완성 앱이 아니다.
 
 ---
