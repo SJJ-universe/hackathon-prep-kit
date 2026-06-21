@@ -9,6 +9,11 @@ npm-debug.log*
 .env
 .env.*
 *.local
+!.env.example
+
+# 데이터 스냅샷(런타임 생성, 키로 받은 응답) — 폴더 구조만 유지
+/data/snapshots/*.json
+!/data/snapshots/.gitkeep
 
 # Logs
 *.log
